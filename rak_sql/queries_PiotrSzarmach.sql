@@ -87,16 +87,13 @@ CREATE AGGREGATE median(anyelement) (
 );
 
 SELECT w.id_lekarza,
-  AVG(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)) as oczekiwanie
+  AVG(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)) as oczekiwanie,
+  (SELECT median(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)) FROM Wyniki w) as mediana
 FROM Wyniki w
 GROUP BY w.id_lekarza
 HAVING AVG(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp))
-       > 1.5 * median(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp));
+       > 1.5 * (SELECT median(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)) FROM Wyniki w);
 
-SELECT median(
-                DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)
-             )
-FROM Wyniki w;
 
 
 
