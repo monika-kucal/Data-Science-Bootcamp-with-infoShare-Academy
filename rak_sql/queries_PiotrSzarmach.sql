@@ -94,11 +94,7 @@ HAVING AVG(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp))
        > 1.5 * median(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp));
 
 SELECT median(
-                (
-                    SELECT AVG(DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp))
-                    FROM Wyniki w
-                    GROUP BY w.id_lekarza
-                )
+                DATE_PART('day', w.dataoceny::timestamp - w.databadania::timestamp)
              )
 FROM Wyniki w;
 
