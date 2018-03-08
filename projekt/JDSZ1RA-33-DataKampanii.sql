@@ -37,7 +37,6 @@ base as (select to_char(data_kampanii,'YYYY-Q') data_kampanii,
     sum(convert) / sum(sum(convert)) over() as DG,
     (sum(sent) - sum(convert)) / sum((sum(sent) - sum(convert))) over() as DB
 from summary
-  where data_kampanii between '2016-01-01' and '2017-12-31'
   group by 1
 order by 1),
 
@@ -45,6 +44,11 @@ WoE as (select data_kampanii as dkWoE, ln(DG/DB) WoE_val from base),
 
 DG_DB_diff as (select data_kampanii as dkDiff, (DG - DB) DDiff from base),
 
-IV_Part as (select DDiff * WoE_val as IV from DG_DB_diff join WoE on dkDiff = dkWoE)
+IV_Part as (select dkDiff as data_kampanii, DDiff * WoE_val as IV from DG_DB_diff join WoE on dkDiff = dkWoE)
 
-select sum(IV) from IV_Part
+--select sum(IV) from IV_Part
+
+select b.*, w.WoE_val, d.DDiff, i.IV from base b
+join WoE w on b.data_kampanii = w.dkWoE
+join DG_DB_diff d on b.data_kampanii = d.dkDiff
+join IV_Part i on b.data_kampanii = i.data_kampanii
