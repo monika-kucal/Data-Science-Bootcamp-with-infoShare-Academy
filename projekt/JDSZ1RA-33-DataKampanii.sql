@@ -32,13 +32,14 @@ summary as
 from mianownik_agr m
 left join konwersja_agr k on m.id_kampanii=k.id_skutecznej_kampanii),
 
-base as (select to_char(data_kampanii,'YYYY-Q') data_kampanii,
+base as (select to_char(data_kampanii,'MM') data_kampanii,
   sum(convert) pozytywne, sum(sent) - sum(convert) negatywne , sum(sent) wszystkie,
     sum(convert) / sum(sum(convert)) over() as DG,
     (sum(sent) - sum(convert)) / sum((sum(sent) - sum(convert))) over() as DB
 from summary
   group by 1
-order by 1),
+    order by 1
+  ),
 
 WoE as (select data_kampanii as dkWoE, ln(DG/DB) WoE_val from base),
 
