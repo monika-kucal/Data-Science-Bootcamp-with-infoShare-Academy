@@ -156,7 +156,15 @@ for(i in 1:dim(df_comp_small[1]))
 }
 
 #30) Create function f_agent_stats which for given agent_id, will return total number of actions in all tables (analiza_wniosku, analiza_operatora etc)
+#analizy_wnioskow, analiza_prawna, analiza_operatora,rekompensaty, szczegoly_rekompensat,dokumenty
 f_agent_stats <- function(p_agent_id)
 {
-  
+   return (dbGetQuery(con, paste("SELECT COUNT(*) FROM analizy_wnioskow WHERE id_agenta =", p_agent_id))[[1]] +
+          dbGetQuery(con, paste("SELECT COUNT(*) FROM analiza_prawna WHERE agent_id =", p_agent_id))[[1]] +
+          dbGetQuery(con, paste("SELECT COUNT(*) FROM analiza_operatora WHERE agent_id =", p_agent_id))[[1]] +
+          dbGetQuery(con, paste("SELECT COUNT(*) FROM rekompensaty WHERE id_agenta =", p_agent_id))[[1]] +
+          dbGetQuery(con, paste("SELECT COUNT(*) FROM szczegoly_rekompensat WHERE id_agenta =", p_agent_id))[[1]] +
+          dbGetQuery(con, paste("SELECT COUNT(*) FROM dokumenty WHERE agent_id =", p_agent_id))[[1]])
 }
+
+f_agent_stats("9")
