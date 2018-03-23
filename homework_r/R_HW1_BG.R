@@ -172,3 +172,18 @@ head(df_comp_small)
 # 28
 
 DB <- df_comp_small
+
+# 29
+
+srednia <- mean(DB$kwota)
+srednia
+
+for(i in 1:length(DB$kwota)) {
+  if(DB$kwota[i] < srednia) {
+    DB$ammount_category[i] <- "low"
+  } else {
+    DB$ammount_category[i] <- "high"
+  }
+}
+
+
