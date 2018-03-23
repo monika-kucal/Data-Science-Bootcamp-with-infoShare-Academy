@@ -186,4 +186,24 @@ for(i in 1:length(DB$kwota)) {
   }
 }
 
+# 30
 
+f_agent_stats <- function(x) {
+  drv <- dbDriver("PostgreSQL")
+  
+  con <- dbConnect(drv, dbname = "postgres",
+                   host = "localhost",
+                   port = 5432,
+                   user = "postgres",
+                   password = "postgres")
+  
+  analiza_operatora <- dbGetQuery(con, paste("SELECT COUNT(*) AS analiza_operatora FROM analiza_operatora WHERE agent_id =", x))
+  analiza_prawna <- dbGetQuery(con, paste("SELECT COUNT(*) AS analiza_prawna FROM analiza_prawna WHERE agent_id =", x))
+  analiza_wnioskow <- dbGetQuery(con, paste("SELECT COUNT(*) AS analiza_wnioskow FROM analizy_wnioskow WHERE id_agenta =", x))
+  dokumenty <- dbGetQuery(con, paste("SELECT COUNT(*) AS dokumenty FROM dokumenty WHERE agent_id =", x))
+  
+  print(analiza_operatora)
+  print(analiza_prawna)
+  print(analiza_wnioskow)
+  print(dokumenty)
+}
