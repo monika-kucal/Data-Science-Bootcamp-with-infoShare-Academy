@@ -54,6 +54,8 @@ ggplot(filter(dane_z_html, Osrodek %in%
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
 
+ggsave("PiS.png", width = 5, height = 5)
+
 # wykres dla PO
 ggplot(filter(dane_z_html, Osrodek %in% 
                 c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
@@ -62,6 +64,8 @@ ggplot(filter(dane_z_html, Osrodek %in%
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
+
+ggsave("PO.png", width = 5, height = 5)
 
 # wykres dla K15
 ggplot(filter(dane_z_html, Osrodek %in% 
@@ -72,6 +76,8 @@ ggplot(filter(dane_z_html, Osrodek %in%
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
 
+ggsave("K15.png", width = 5, height = 5)
+
 # wykres dla PSL
 ggplot(filter(dane_z_html, Osrodek %in% 
                 c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
@@ -80,3 +86,5 @@ ggplot(filter(dane_z_html, Osrodek %in%
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
+
+ggsave("PSL.png", width = 5, height = 5)
