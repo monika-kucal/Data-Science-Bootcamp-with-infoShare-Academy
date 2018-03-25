@@ -1,12 +1,3 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(shinydashboard)
 
@@ -31,9 +22,11 @@ ui <- dashboardPage(
     tabItems(
       # Results TAB
       ################################################################################################
-      tabItem(tabName = "results"
-              
-      ),
+      tabItem(tabName = "results",
+              fluidRow(
+                column(width = 6, plotOutput("pisPlot")),
+                column(width = 6, plotOutput("poPlot"))
+              ),
       
       # Parties TAB
       ################################################################################################
@@ -48,4 +41,5 @@ ui <- dashboardPage(
       )
     )
   )
+)
 )
