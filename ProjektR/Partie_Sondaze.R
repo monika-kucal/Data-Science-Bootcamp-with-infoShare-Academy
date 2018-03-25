@@ -51,7 +51,7 @@ ggplot(filter(dane_z_html, Osrodek %in%
               aes(x = Publikacja, y = PiS)) +
   ylim(0, 60) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
 
 # wykres dla PO
@@ -60,7 +60,7 @@ ggplot(filter(dane_z_html, Osrodek %in%
        aes(x = Publikacja, y = PO)) +
   ylim(0, 60) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
 
 # wykres dla K15
@@ -69,7 +69,7 @@ ggplot(filter(dane_z_html, Osrodek %in%
        aes(x = Publikacja, y = K15)) +
   ylim(0, 60) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
 
 # wykres dla PSL
@@ -78,5 +78,5 @@ ggplot(filter(dane_z_html, Osrodek %in%
        aes(x = Publikacja, y = PSL)) +
   ylim(0, 60) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek)
