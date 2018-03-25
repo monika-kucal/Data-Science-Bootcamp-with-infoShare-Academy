@@ -2,6 +2,8 @@
 # zaladowanie pakietow
 library(XML)
 library(RCurl)
+library(ggplot2)
+library(tidyverse)
 
 # zrodlo danych
 link <- "https://docs.google.com/spreadsheets/d/1P9PG5mcbaIeuO9v_VE5pv6U4T2zyiRiFK_r8jVksTyk/htmlembed?single=true&gid=0&range=a10:o400&widget=false&chrome=false"
@@ -15,17 +17,11 @@ nms <- dane_z_html[1,]
 # nadanie nazw kolumnom
 colnames(dane_z_html) <- nms
 
-# usunięcie pierwszego wiersza
+# usunięcie pierwszego wiersza i pierwszej kolumny
 dane_z_html <- dane_z_html[-1, -1]
 
 # zastąpienie pzecinkow kropkami w wybranych kolumnach
 dane_z_html[, 7:15] <- apply(apply(dane_z_html[,7:15], 2, gsub, patt=",", replace="."), 2, as.numeric)
-
-# sprawdzenie poprawności tabeli
-head(dane_z_html)
-
-
-library(tidyverse)
 
 # zamiana formatu daty z character na date
 dane_z_html[, 3]
@@ -37,13 +33,7 @@ dane_z_html[, 3] <- daty_dat
 colnames(dane_z_html)[1] <- "Osrodek"
 colnames(dane_z_html)[9] <- "K15"
 
-# sprawdzenie poprwności danych
-head(dane_z_html)
-
-
 # robienie wykresow
-
-library(ggplot2)
 
 # wykres dla PiS
 ggplot(filter(dane_z_html, Osrodek %in% 
