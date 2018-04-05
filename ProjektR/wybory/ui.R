@@ -1,7 +1,9 @@
 library(shiny)
 library(shinydashboard)
+source('initData.R')
 
-# Define UI for application that draws a histogram
+data <- init_data()
+
 ui <- dashboardPage(
   # HEADER
   ################################################################################################
@@ -20,20 +22,30 @@ ui <- dashboardPage(
   ################################################################################################
   dashboardBody(
     tabItems(
-      # Results TAB
+      # Parties TAB
       ################################################################################################
-      tabItem(tabName = "results",
+      tabItem(tabName = "parties",
               fluidRow(
                 column(width = 6, plotOutput("pisPlot")),
                 column(width = 6, plotOutput("poPlot")),
                 column(width = 6, plotOutput("k15Plot")),
                 column(width = 6, plotOutput("pslPlot"))
-              ),
+              )),
       
-      # Parties TAB
+      # Results TAB
       ################################################################################################
-      tabItem(tabName = "parties"
-              
+      tabItem(tabName = "results",
+              fluidRow(
+                column(width = 6, 
+                       selectInput(inputId = "principalTypeSelector",
+                                   label = "Choose a principal type:",
+                                   choices = (data$Zleceniodawca)),
+                       selectInput(inputId = "pollCenterTypeSelector",
+                                   label = "Choose a poll center type:",
+                                   choices = (data$Osrodek)),
+                       dataTableOutput("results_table")
+                )
+              )
       ),
       
       # SENTIMENT TAB
@@ -43,5 +55,4 @@ ui <- dashboardPage(
       )
     )
   )
-)
 )

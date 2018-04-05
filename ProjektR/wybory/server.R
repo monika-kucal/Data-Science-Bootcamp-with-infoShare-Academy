@@ -51,4 +51,8 @@ server <- shinyServer(function(input, output) {
       theme_hc()
   })
   
+  output$results_table <- renderDataTable({
+    filter(data, data$Osrodek == input$pollCenterTypeSelector & data$Zleceniodawca == input$principalTypeSelector)
+  })
+  
 })
