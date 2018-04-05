@@ -25,7 +25,9 @@ ui <- dashboardPage(
       tabItem(tabName = "results",
               fluidRow(
                 column(width = 6, plotOutput("pisPlot")),
-                column(width = 6, plotOutput("poPlot"))
+                column(width = 6, plotOutput("poPlot")),
+                column(width = 6, plotOutput("k15Plot")),
+                column(width = 6, plotOutput("pslPlot"))
               ),
       
       # Parties TAB
