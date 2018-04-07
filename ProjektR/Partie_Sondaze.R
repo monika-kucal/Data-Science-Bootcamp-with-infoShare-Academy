@@ -39,6 +39,10 @@ head(dane_z_html)
 
 dane_z_html <- gather(dane_z_html, "PiS":"N/Z", key = "partia", value = "poparcie", na.rm = FALSE)
 
+dane_z_html <- dane_z_html %>%
+  group_by(Osrodek, Metoda) %>%
+  mutate(liczba = n_distinct(Publikacja))
+
 head(dane_z_html)
 
 # robienie wykresow
@@ -101,17 +105,19 @@ ggsave("PSL.png", width = 5, height = 5)
 
 # wykres osrodek_metoda
 
-dane_stat <- dane_z_html %>%
-              group_by(Osrodek, Metoda) %>%
-              summarise(liczba = n_distinct(Publikacja)) %>%
-              arrange(desc(liczba))
-dane_stat
-
 ggplot(filter(dane_z_html, Osrodek %in% c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
        aes(Metoda, Osrodek)) +
-  geom_tile()
+  geom_tile(aes(fill = liczba))
 
-head(dane_z_html)
+# zadanie 45
 
-
-
+ggplot(filter(dane_z_html, Osrodek %in% 
+                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")
+              & Metoda == "CATI" & partia %in% c("PiS", "PO", "K15", "PSL")),
+       aes(x = Publikacja, y = poparcie)) +
+  ylim(0, 60) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_grid(partia ~ Osrodek) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  +
+  theme_gdocs()
