@@ -83,6 +83,7 @@ df_sentiment_final <- data.frame(emotions=row.names(df_sentiment_transposed),
 df_emotions <- df_sentiment_final[1:8,]
 df_sentiments <- df_sentiment_final[9:10,]
 
+
 # plot emotions
 ggplot(data = df_emotions, mapping = aes(x = emotions, 
                                          y = sent_value, 
@@ -101,5 +102,5 @@ ggplot(data = df_emotions, mapping = aes(x = emotions,
 
 negative_perc <- df_sentiments[1,2]/sum(df_sentiments[,2])
 positive_perc <- df_sentiments[2,2]/sum(df_sentiments[,2])
-not_classified <- dim(d)[1] - sum(df_sentiments[,2])
+not_classified_perc <- (dim(d)[1] - sum(df_sentiments[,2]))/dim(d)[1]
     
