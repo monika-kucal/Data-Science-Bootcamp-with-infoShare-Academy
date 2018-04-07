@@ -26,10 +26,14 @@ ui <- dashboardPage(
       ################################################################################################
       tabItem(tabName = "parties",
               fluidRow(
-                column(width = 6, plotOutput("pisPlot")),
-                column(width = 6, plotOutput("poPlot")),
-                column(width = 6, plotOutput("k15Plot")),
-                column(width = 6, plotOutput("pslPlot"))
+                column(width = 6, selectInput(inputId = "partyTypeSelector",
+                                              label = "Choose a party type:",
+                                              choices = (c("PiS", "PO", "PSL", "K15"))),
+                                              plotOutput("filteredPlot"))
+                #column(width = 6, plotOutput("pisPlot")),
+                #column(width = 6, plotOutput("poPlot")),
+                #column(width = 6, plotOutput("k15Plot")),
+                #column(width = 6, plotOutput("pslPlot"))
               )),
       
       # Results TAB
