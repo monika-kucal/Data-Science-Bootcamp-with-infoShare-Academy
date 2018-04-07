@@ -93,12 +93,13 @@ ggplot(data = df_emotions, mapping = aes(x = emotions,
   ylab("words count") +
   theme(axis.text.x=element_text(angle=90, hjust=1))
 
-
+  
 # JDSZ1RA-82
 # Goal: I need to see % sentiment from text
 # please add data to "text mining - sentiment" tab:
 # infoBoxOutput (% of positives)
 # infoBoxOutput (% of negatives)
+#
 
 negative_perc <- df_sentiments[1,2]/sum(df_sentiments[,2])
 positive_perc <- df_sentiments[2,2]/sum(df_sentiments[,2])
