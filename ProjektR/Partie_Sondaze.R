@@ -32,55 +32,86 @@ dane_z_html[, 3] <- daty_dat
 
 # wyczyszczenie naw kolumn
 colnames(dane_z_html)[1] <- "Osrodek"
+colnames(dane_z_html)[4] <- "Metoda"
 colnames(dane_z_html)[9] <- "K15"
+
+head(dane_z_html)
+
+dane_z_html <- gather(dane_z_html, "PiS":"N/Z", key = "partia", value = "poparcie", na.rm = FALSE)
+
+head(dane_z_html)
 
 # robienie wykresow
 
 # wykres dla PiS
 ggplot(filter(dane_z_html, Osrodek %in% 
-              c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
-              aes(x = Publikacja, y = PiS)) +
+              c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")
+              & partia == "PiS"),
+              aes(x = Publikacja, y = poparcie)) +
   ylim(0, 60) +
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  +
+  theme_gdocs()
 
 ggsave("PiS.png", width = 5, height = 5)
 
 # wykres dla PO
 ggplot(filter(dane_z_html, Osrodek %in% 
-                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
-       aes(x = Publikacja, y = PO)) +
+                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")
+              & partia == "PO"),
+       aes(x = Publikacja, y = poparcie)) +
   ylim(0, 60) +
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  +
+  theme_gdocs()
 
 ggsave("PO.png", width = 5, height = 5)
 
 # wykres dla K15
 ggplot(filter(dane_z_html, Osrodek %in% 
-                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
-       aes(x = Publikacja, y = K15)) +
+                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")
+              & partia == "K15"),
+       aes(x = Publikacja, y = poparcie)) +
   ylim(0, 60) +
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  +
+  theme_gdocs()
 
 ggsave("K15.png", width = 5, height = 5)
 
 # wykres dla PSL
 ggplot(filter(dane_z_html, Osrodek %in% 
-                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
-       aes(x = Publikacja, y = PSL)) +
+                c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")
+              & partia == "PSL"),
+       aes(x = Publikacja, y = poparcie)) +
   ylim(0, 60) +
   geom_point() +
   geom_smooth(se = FALSE) +
   facet_wrap(~ Osrodek) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  theme_hc()
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  +
+  theme_gdocs()
 
 ggsave("PSL.png", width = 5, height = 5)
+
+# wykres osrodek_metoda
+
+dane_stat <- dane_z_html %>%
+              group_by(Osrodek, Metoda) %>%
+              summarise(liczba = n_distinct(Publikacja)) %>%
+              arrange(desc(liczba))
+dane_stat
+
+ggplot(filter(dane_z_html, Osrodek %in% c("CBOS","Estymator","IBRiS","IPSOS","Kantar MB","Kantar Public","MillwardBrown","Pollster","TNS Polska")),
+       aes(Metoda, Osrodek)) +
+  geom_tile()
+
+head(dane_z_html)
+
+
+
