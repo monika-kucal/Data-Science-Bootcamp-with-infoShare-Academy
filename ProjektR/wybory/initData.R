@@ -2,6 +2,96 @@ library(XML)
 library(RCurl)
 library(tidyverse)
 
+library(tm)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+library(tidyverse)
+library(scales)
+library(syuzhet)
+
+init_mining <- function()
+{
+  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=Ah08CotCp9MtwF5sLnNwYV4o2afRCDdMks5a0eDIwA%3D%3D"
+  
+  text<-readLines(filepath)
+  
+  docs<-Corpus(VectorSource(text))
+  
+  inspect(docs)
+  
+  docs[[1]]$content
+  docs[[3]]$content
+  
+  docs<-tm_map(docs,tolower)
+  docs<-tm_map(docs,removeNumbers)
+  docs<-tm_map(docs,removeWords, stopwords("english"))
+  docs<-tm_map(docs,removePunctuation)
+  docs<-tm_map(docs,stripWhitespace)
+  docs<-tm_map(docs,removeWords,c("th"))
+  
+  
+  dtm<-TermDocumentMatrix(docs)
+  m<-as.matrix(dtm)
+  v<-sort(rowSums(m),decreasing=TRUE)
+  return(data.frame(word=names(v),freq=v))
+}
+
+init_dtm <- function()
+{
+  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=Ah08CotCp9MtwF5sLnNwYV4o2afRCDdMks5a0eDIwA%3D%3D"
+  
+  text<-readLines(filepath)
+  
+  docs<-Corpus(VectorSource(text))
+  
+  inspect(docs)
+  
+  docs[[1]]$content
+  docs[[3]]$content
+  
+  docs<-tm_map(docs,tolower)
+  docs<-tm_map(docs,removeNumbers)
+  docs<-tm_map(docs,removeWords, stopwords("english"))
+  docs<-tm_map(docs,removePunctuation)
+  docs<-tm_map(docs,stripWhitespace)
+  docs<-tm_map(docs,removeWords,c("th"))
+  dtm <- TermDocumentMatrix(docs)
+  
+  return(dtm)
+}
+
+prepare_data_emotions <- function(d)
+{
+  df_sentiment<-get_nrc_sentiment(as.String(d$word)) 
+  
+  df_sentiment_transposed <- t(df_sentiment) # transpose data frame from columns to rows
+  df_sentiment_final <- data.frame(emotions=row.names(df_sentiment_transposed), 
+                                   sent_value=df_sentiment_transposed, row.names=NULL) # prepare final data frame with emotions in 1st column, values in 2nd
+  df_sentiments <- df_sentiment_final[1:8,]
+  return(df_sentiments)
+}
+
+prepare_data_sentiment <- function(d)
+{
+  df_sentiment<-get_nrc_sentiment(as.String(d$word)) 
+  
+  df_sentiment_transposed <- t(df_sentiment) # transpose data frame from columns to rows
+  df_sentiment_final <- data.frame(emotions=row.names(df_sentiment_transposed), 
+                                   sent_value=df_sentiment_transposed, row.names=NULL) # prepare final data frame with emotions in 1st column, values in 2nd
+  df_emotions <- df_sentiment_final[9:10,]
+  return(df_emotions)
+}
+
+getSentiment <-function(d, df_sentiment)
+{
+  negative_perc <- df_sentiment[1,2]/sum(df_sentiment[,2])
+  positive_perc <- df_sentiment[2,2]/sum(df_sentiment[,2])
+  not_classified_perc <- (dim(d)[1] - sum(df_sentiment[,2]))/dim(d)[1]
+  
+  return(c(negative_perc,positive_perc,not_classified_perc))
+}
+
 init_data <- function()
 {
   # zrodlo danych

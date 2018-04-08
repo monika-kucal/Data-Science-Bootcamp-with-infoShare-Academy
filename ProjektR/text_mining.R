@@ -1,10 +1,3 @@
-library(tm)
-library(SnowballC)
-library(wordcloud)
-library(RColorBrewer)
-library(tidyverse)
-library(scales)
-library(syuzhet)
 
 # TEXT MINING
 
@@ -66,8 +59,7 @@ frequency <- data.frame(word=findFreqTerms(dtm, lowfreq = 5))
 #output:
 #    data table with results from findAssocs
 
-associations <- data.frame(findAssocs(dtm, terms = c("politics"), corlimit = 0.5))
-
+associations <- data.frame(cbind(rownames(as.data.frame(findAssocs(dtm, terms = c("politics"), corlimit = 0.5))),as.data.frame(findAssocs(dtm, terms = c("politics"), corlimit = 0.5))))
 
 # JDSZ1RA-81
 # Goal: I need to see emotions from text

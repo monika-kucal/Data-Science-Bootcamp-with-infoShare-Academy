@@ -7,14 +7,15 @@ data <- init_data()
 ui <- dashboardPage(
   # HEADER
   ################################################################################################
-  dashboardHeader(title = "Wyniki sondażów"),
+  dashboardHeader(title = "Poll results"),
   # SIDEBAR
   ################################################################################################
   dashboardSidebar(
     sidebarMenu(
       menuItem("Results", tabName = "results", icon = icon("dashboard"), badgeLabel = "new", badgeColor = "green"),
       menuItem("Parties", tabName = "parties", icon = icon("th")),
-      menuItem("Text mining", tabName = "text_mining", icon = icon("th"))
+      menuItem("Text mining", tabName = "text_mining", icon = icon("th")),
+      menuItem("Text mining - sentiment", tabName = "text_mining_sentiment", icon = icon("th"))
     )
   ),
   
@@ -51,9 +52,29 @@ ui <- dashboardPage(
       
       # SENTIMENT TAB
       ################################################################################################
-      tabItem(tabName = "text_mining"
-              
+      tabItem(tabName = "text_mining",
+              fluidRow(
+                column(width = 6, plotOutput("frequencies")),
+                column(width = 6, plotOutput("wordcloud"))
+              ),
+              fluidRow(width = 6, numericInput(inputId = 'frequency', label='Number of occurencies:', value = 5),
+                       dataTableOutput("freqTerms")),
+              fluidRow(width = 6, 
+                       textInput(inputId = 'word', label='Word: '),
+                       numericInput(inputId = 'correlationValue', label='Correlation value:', value = 0.5),
+                       dataTableOutput("correlation"))
+      ),
+      # TEST MINING - SENTIMENT TAB
+      ################################################################################################
+      tabItem(tabName = "text_mining_sentiment",
+              fluidRow(
+                column(
+                  width = 6,
+                  plotOutput("emotions")
+                ),
+                column(width = 6,
+                      verbatimTextOutput("sentiment")))
+              )
       )
     )
   )
-)
