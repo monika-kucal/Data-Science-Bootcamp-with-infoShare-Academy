@@ -30,7 +30,14 @@ init_data <- function()
   
   # wyczyszczenie naw kolumn
   colnames(dane_z_html)[1] <- "Osrodek"
+  colnames(dane_z_html)[4] <- "Metoda"
   colnames(dane_z_html)[9] <- "K15"
+  
+  dane_z_html <- gather(dane_z_html, "PiS":"N/Z", key = "partia", value = "poparcie", na.rm = FALSE)
+  
+  #dane_z_html <- dane_z_html %>%
+  #  group_by(Osrodek, Metoda) %>%
+  #  mutate(liczba = n_distinct(Publikacja))
   
   return(dane_z_html)
 }
