@@ -89,7 +89,7 @@ getSentiment <-function(d, df_sentiment)
   positive_perc <- df_sentiment[2,2]/sum(df_sentiment[,2])
   not_classified_perc <- (dim(d)[1] - sum(df_sentiment[,2]))/dim(d)[1]
   
-  return(c(negative_perc,positive_perc,not_classified_perc))
+  return(c(Negative=negative_perc,Positive=positive_perc,Not_classified=not_classified_perc))
 }
 
 init_data <- function()
