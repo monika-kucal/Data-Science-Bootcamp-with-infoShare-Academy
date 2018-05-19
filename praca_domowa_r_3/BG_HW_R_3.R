@@ -1,10 +1,12 @@
 library(shiny)
 library(ggplot2)
+library(plyr)
 library(dplyr)
 library(nlme)
 library(DT)
+library(lazyeval)
 
-
+mtcars <- cbind(mtcars, "all" = 1)
 mtcars_data <- mtcars
 mtcars_data[, c("cyl", "vs", "am", "gear", "carb")] <- lapply(mtcars_data[, c("cyl", "vs", "am", "gear", "carb")], factor)
 mtcars_data$all <- factor(1)
@@ -70,9 +72,10 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   corr <- reactive({
-    x <- mtcars_data %>% pull(input$x)
-    y <- mtcars_data %>% pull(input$y)
-    r <- cor(x, y)
+    z <- mtcars %>% pull(input$z)
+    x <- mtcars %>% pull(input$x)
+    y <- mtcars %>% pull(input$y)
+    r <- cbind(z, x, y)
     print(r)
   })
   
@@ -89,12 +92,12 @@ server <- function(input, output) {
       geom_smooth(method = "lm")
   })
   
-  output$correlation <- renderPrint({
-    corr()
-  })
-  
   output$lmresults <- renderPrint({
     lmres()
+  })
+  
+  output$correlation <- renderPrint({
+    corr()
   })
 
 }
