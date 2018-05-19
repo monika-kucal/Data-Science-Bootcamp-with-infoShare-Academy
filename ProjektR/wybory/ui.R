@@ -15,7 +15,8 @@ ui <- dashboardPage(
       menuItem("Results", tabName = "results", icon = icon("dashboard"), badgeLabel = "new", badgeColor = "green"),
       menuItem("Parties", tabName = "parties", icon = icon("th")),
       menuItem("Text mining", tabName = "text_mining", icon = icon("th")),
-      menuItem("Text mining - sentiment", tabName = "text_mining_sentiment", icon = icon("th"))
+      menuItem("Text mining - sentiment", tabName = "text_mining_sentiment", icon = icon("th")),
+      menuItem("Twitter", tabName = "twitter_hashtags", icon = icon("th"))
     )
   ),
   
@@ -74,7 +75,12 @@ ui <- dashboardPage(
                 ),
                 column(width = 6,
                       verbatimTextOutput("sentiment")))
-              )
+              ),
+      # TWITTER
+      ################################################################################################
+      tabItem(tabName = "twitter_hashtags",
+              fluidRow(
+                ))
+      )
       )
     )
-  )

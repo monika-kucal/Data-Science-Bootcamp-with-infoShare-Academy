@@ -12,8 +12,7 @@ library(syuzhet)
 
 init_mining <- function()
 {
-  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=Ah08CotCp9MtwF5sLnNwYV4o2afRCDdMks5a0eDIwA%3D%3D"
-  
+  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=AGaKLiweG6Qh8rvNcsUcOHKXiDytHwAlks5bCUVYwA%3D%3D"
   text<-readLines(filepath)
   
   docs<-Corpus(VectorSource(text))
@@ -39,8 +38,7 @@ init_mining <- function()
 
 init_dtm <- function()
 {
-  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=Ah08CotCp9MtwF5sLnNwYV4o2afRCDdMks5a0eDIwA%3D%3D"
-  
+  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=AGaKLiweG6Qh8rvNcsUcOHKXiDytHwAlks5bCUVYwA%3D%3D"
   text<-readLines(filepath)
   
   docs<-Corpus(VectorSource(text))
