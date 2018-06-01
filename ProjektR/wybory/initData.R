@@ -1,7 +1,6 @@
 library(XML)
 library(RCurl)
 library(tidyverse)
-
 library(tm)
 library(SnowballC)
 library(wordcloud)
@@ -9,10 +8,12 @@ library(RColorBrewer)
 library(tidyverse)
 library(scales)
 library(syuzhet)
+library(rtweet)
+library(httpuv)
 
 init_mining <- function()
 {
-  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=AGaKLv6hiWNHpx50cntX_Zu7GGK9fWiXks5bEoswwA%3D%3D"
+  filepath<-"parties_en.txt"
   text<-readLines(filepath)
   
   docs<-Corpus(VectorSource(text))
@@ -38,7 +39,7 @@ init_mining <- function()
 
 init_dtm <- function()
 {
-  filepath<-"https://raw.githubusercontent.com/infoshareacademy/jdsz1-materialy-r/master/20180323_ellection_pools/parties_en.txt?token=AGaKLiweG6Qh8rvNcsUcOHKXiDytHwAlks5bCUVYwA%3D%3D"
+  filepath<-"parties_en.txt"
   text<-readLines(filepath)
   
   docs<-Corpus(VectorSource(text))
@@ -128,4 +129,83 @@ init_data <- function()
   #  mutate(liczba = n_distinct(Publikacja))
   
   return(dane_z_html)
+}
+
+twitter_username <- function(hashtag)
+{
+  # whatever name you assigned to your created app
+  appname <- "sentiment_analysis_pszarmach"
+  
+  ## api key (example below is not a real key)
+  key <- "4nyEL0XIk5WWGPvAVSpeQGnxL"
+  
+  ## api secret (example below is not a real key)
+  secret <- "Wg4qQuyxziKzK5JCczyk9bbsKocKfoqvvRam68xTgbz3LvyoHG"
+  
+  twitter_token <- create_token(
+    app = appname,
+    consumer_key = key,
+    consumer_secret = secret)
+  
+  some_tweets <- search_tweets(q = hashtag,
+                               n = 500)
+  
+  df1 <- data.frame(sort(table(some_tweets$screen_name), decreasing = TRUE))[1:25,]
+  colnames(df1)<-c('Username','Wystapienia')
+  
+  return(df1)
+}
+
+twitter_sources <- function(hashtag)
+{
+  # whatever name you assigned to your created app
+  appname <- "sentiment_analysis_pszarmach"
+  
+  ## api key (example below is not a real key)
+  key <- "4nyEL0XIk5WWGPvAVSpeQGnxL"
+  
+  ## api secret (example below is not a real key)
+  secret <- "Wg4qQuyxziKzK5JCczyk9bbsKocKfoqvvRam68xTgbz3LvyoHG"
+  
+  
+  twitter_token <- create_token(
+    app = appname,
+    consumer_key = key,
+    consumer_secret = secret)
+  
+  some_tweets <- search_tweets(q = hashtag,
+                               n = 500)
+  
+  df2 <- data.frame(sort(table(some_tweets$source), decreasing = TRUE))[1:10,]
+  colnames(df2)<-c('Source','Wystapienia')
+  
+  return(df2)
+}
+
+twitter_top_tweets <- function(hashtag)
+{
+  # whatever name you assigned to your created app
+  appname <- "sentiment_analysis_pszarmach"
+  
+  ## api key (example below is not a real key)
+  key <- "4nyEL0XIk5WWGPvAVSpeQGnxL"
+  
+  ## api secret (example below is not a real key)
+  secret <- "Wg4qQuyxziKzK5JCczyk9bbsKocKfoqvvRam68xTgbz3LvyoHG"
+  
+  
+  twitter_token <- create_token(
+    app = appname,
+    consumer_key = key,
+    consumer_secret = secret)
+  
+  some_tweets <- search_tweets(q = hashtag,
+                               n = 500)
+  
+  df3 <- data.frame(some_tweets$text, some_tweets$favorite_count)
+  df3 <- df3[order(-df3$some_tweets.favorite_count),]
+  colnames(df3) <- c("Tweet", "Polubienia")
+  df3_final <- df3[1:20,]
+  
+  return(df3_final)
 }

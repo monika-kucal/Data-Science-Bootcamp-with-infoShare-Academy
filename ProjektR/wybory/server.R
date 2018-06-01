@@ -81,4 +81,16 @@ server <- shinyServer(function(input, output) {
     print(getSentiment(df_mining, df_sentiment))
   })
   
+  output$username_table <- renderDataTable({
+    twitter_username(input$hashtagTestInput)
+  })
+  
+  output$sources_table <- renderDataTable({
+    twitter_sources(input$hashtagTestInput)
+  })
+  
+  output$top_tweets_table <- renderDataTable({
+    twitter_top_tweets(input$hashtagTestInput)
+  })
+  
 })

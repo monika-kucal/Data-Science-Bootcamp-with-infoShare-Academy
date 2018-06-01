@@ -78,9 +78,18 @@ ui <- dashboardPage(
               ),
       # TWITTER
       ################################################################################################
-      tabItem(tabName = "twitter_hashtags",
-              fluidRow(
-                ))
-      )
-      )
+        tabItem(tabName = "twitter_hashtags",
+                fluidRow(
+                    column(width = 12, 
+                           textInput(inputId = "hashtagTestInput",
+                                   label = "Hashtag:"),
+                           submitButton(text = "Search"),
+                           dataTableOutput("username_table"),
+                           dataTableOutput("sources_table"),
+                           dataTableOutput("top_tweets_table")
+                          )
+                        )
+                 )
     )
+)
+)

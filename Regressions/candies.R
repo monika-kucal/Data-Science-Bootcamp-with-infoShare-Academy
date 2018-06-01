@@ -13,6 +13,29 @@ candy <- read.csv('../../Regressions/candy-data.csv', header = TRUE)
 candy$winpercent <- candy$winpercent / 100
 candy
 candy$competitorname <- NULL
+candy$chocolate <- as.factor(candy$chocolate)
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+# train the model
+model <- caret::train(chocolate ~ ., data=candy, method="nnet", preProcess="range", trControl=control)
+# estimate variable importance
+importance <- varImp(model, scale=FALSE)
+# summarize importance
+print(importance)
+# plot importance
+plot(importance)
+
+
+candy <- read.csv('../../Regressions/candy-data.csv', header = TRUE)
+candy$winpercent <- candy$winpercent / 100
+candy$competitorname <- NULL
+candy$caramel <- NULL
+candy$sugarpercent <- NULL
+candy$pricepercent <- NULL
+candy$pluribus <- NULL
+candy$peanutyalmondy <- NULL
+candy$crispedricewafer <- NULL
+candy$nougat <- NULL
+
 #Podziel dane na części train/test
 set.seed(789)
 index_train <- createDataPartition(candy$chocolate, p=0.8, list=FALSE) #80% uczacy
@@ -76,7 +99,7 @@ ml_task <- makeClassifTask(data = candy_train2,
 # 5-fold cross validation
 cv_folds <- makeResampleDesc("CV", iters = 5)
 
-random_tune <- makeTuneControlRandom(maxit = 17000L)
+random_tune <- makeTuneControlRandom(maxit = 10000L)
 model <- makeLearner("classif.xgboost",predict.type = "prob")
 
 model_Params <- makeParamSet(
