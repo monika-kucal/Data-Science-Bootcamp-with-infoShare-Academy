@@ -31,7 +31,8 @@ ui <- dashboardPage(
                 column(width = 12, 
                        selectInput(inputId = "partyTypeSelector",
                                               label = "Choose a party type:",
-                                              choices = (c("PiS", "PO", "PSL", "K15"))),
+                                              choices = (c("K15", "PiS", "PO", "PSL"))),
+                       submitButton(text = "Render"),
                        plotOutput("filteredPlot")
               ))),
       
@@ -46,6 +47,7 @@ ui <- dashboardPage(
                        selectInput(inputId = "pollCenterTypeSelector",
                                    label = "Choose a poll center type:",
                                    choices = (data$Osrodek)),
+                       submitButton(text = "Execute"),
                        dataTableOutput("results_table")
                 )
               )
@@ -59,10 +61,12 @@ ui <- dashboardPage(
                 column(width = 6, plotOutput("wordcloud"))
               ),
               fluidRow(width = 6, numericInput(inputId = 'frequency', label='Number of occurencies:', value = 5),
+                       submitButton(text = "Execute"),
                        dataTableOutput("freqTerms")),
               fluidRow(width = 6, 
                        textInput(inputId = 'word', label='Word: '),
                        numericInput(inputId = 'correlationValue', label='Correlation value:', value = 0.5),
+                       submitButton(text = "Execute"),
                        dataTableOutput("correlation"))
       ),
       # TEST MINING - SENTIMENT TAB

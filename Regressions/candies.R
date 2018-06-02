@@ -8,6 +8,7 @@ library(Metrics)
 library(xgboost)
 library(mlr)         # Machine learning library
 library(parallelMap) # Parrelization of ML models
+library(pROC)
 
 candy <- read.csv('../../Regressions/candy-data.csv', header = TRUE)
 candy$winpercent <- candy$winpercent / 100
@@ -147,4 +148,12 @@ u <- union(predicted, reference)
 t <- table(factor(predicted, u), factor(reference, u))
 confusionMatrix(t)
 
+ROCRpred2<-prediction(preds$data$prob.1, reference)
+ROCRperf2<-performance(ROCRpred2, 'tpr','fpr')
+par(mfrow=c(1,1))
+plot(ROCRperf2, colorize=TRUE, lwd=5)
+
+auc2<-performance(ROCRpred2, measure="auc")
+auc2<-auc2@y.values[[1]]
+auc2
                 
